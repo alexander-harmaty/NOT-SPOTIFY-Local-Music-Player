@@ -7,43 +7,55 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.csc311_finalproj.HomeController">
    <top>
       <MenuBar style="-fx-background-color: #4A4746;" BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+                  <MenuItem fx:id="menuItem_importFiles" mnemonicParsing="false" onAction="#handleButton_importFiles" text="Import Files" />
+              <MenuItem fx:id="menuItem_close" mnemonicParsing="false" onAction="#handleButton_close" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem fx:id="menuItem_createPlaylist" mnemonicParsing="false" onAction="#handleButton_createPlaylist" text="Create Playlist" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="menuItem_about" mnemonicParsing="false" onAction="#handleButton_about" text="About" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
    </top>
    <left>
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #2C2B27;" BorderPane.alignment="CENTER" />
+      <VBox fx:id="VBox_playlists" alignment="TOP_CENTER" prefWidth="200.0" spacing="10.0" style="-fx-background-color: #2C2B27;" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="button_library" mnemonicParsing="false" onAction="#handleButton_library" prefWidth="150.0" style="-fx-background-color: #FFFFFF;" text="Library" />
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding></VBox>
    </left>
    <bottom>
       <VBox alignment="CENTER" maxHeight="50.0" maxWidth="1.7976931348623157E308" style="-fx-background-color: #4A4746;" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="300.0" spacing="20.0">
                <children>
-                  <Button fx:id="button_previous" mnemonicParsing="false" prefWidth="65.0" style="-fx-background-color: #FFFFFF;" text="Previous" />
-                  <Button fx:id="button_togglePlayPause" mnemonicParsing="false" prefWidth="65.0" style="-fx-background-color: #FFFFFF;" text="Play" />
-                  <Button fx:id="button_next" mnemonicParsing="false" prefWidth="65.0" style="-fx-background-color: #FFFFFF;" text="Next" />
+                  <Button fx:id="button_previous" mnemonicParsing="false" onAction="#handleButton_previous" prefWidth="65.0" style="-fx-background-color: #FFFFFF;" text="Previous" />
+                  <Button fx:id="button_togglePlayPause" mnemonicParsing="false" onAction="#handleButton_togglePlayPause" prefWidth="65.0" style="-fx-background-color: #FFFFFF;" text="Play" />
+                  <Button fx:id="button_next" mnemonicParsing="false" onAction="#handleButton_next" prefWidth="65.0" style="-fx-background-color: #FFFFFF;" text="Next" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" spacing="5.0">
@@ -60,6 +72,35 @@
       </VBox>
    </bottom>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="imageView_albumArt" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                  <VBox alignment="CENTER_LEFT" prefWidth="200.0">
+                     <children>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Now Playing:" />
+                        <Label fx:id="label_songTitle" text="Song Title" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="label_songArtist" text="Artist" textFill="WHITE" />
+                     </children>
+                  </VBox>
+                  <Slider fx:id="slider_volume" orientation="VERTICAL" />
+               </children>
+            </HBox>
+            <TableView fx:id="tableView_songsList" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000000; -fx-region-background: #000000;">
+              <columns>
+                <TableColumn fx:id="tableColumn_index" prefWidth="30.0" text="#" />
+                <TableColumn fx:id="tableColumn_songTitle" prefWidth="150.0" text="Title" />
+                  <TableColumn fx:id="tableColumn_songAlbum" prefWidth="150.0" text="Album" />
+                  <TableColumn fx:id="tableColumn_songArtist" prefWidth="150.0" text="Artist" />
+                  <TableColumn fx:id="tableColumn_songDuration" prefWidth="100.0" text="Duration" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
    </center>
 </BorderPane>
