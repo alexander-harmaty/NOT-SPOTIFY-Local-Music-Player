@@ -1,14 +1,19 @@
 package edu.farmingdale.csc311_finalproj;
 
 import com.mpatric.mp3agic.ID3v1;
+import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import javafx.scene.image.Image;
+import javafx.scene.media.Media;
 
 /**
  *
@@ -21,6 +26,7 @@ public class Song {
     private String songYear;
     private String songPath;
     private String songURI;
+    private Image songArt;
 
     public Song() {
         this.songTitle = "default";
@@ -55,6 +61,19 @@ public class Song {
             this.songYear = tag.getYear();
             this.songPath = file.getPath();
             this.songURI = file.toURI().toString();
+            Media media = new Media(songURI);
+            this.songArt = (Image) media.getMetadata().get("Image");
+        }
+        if (mp3file.hasId3v2Tag()) {
+            ID3v2 tag = mp3file.getId3v2Tag();
+            byte[] imageData = tag.getAlbumImage();
+            if (imageData != null) {
+                RandomAccessFile raf = new RandomAccessFile("album-artwork", "rw");
+                raf.write(imageData);
+                raf.close();
+            }
+            this.songArt = new Image(new ByteArrayInputStream(imageData));
+            
         } else {
             this.songTitle = "default";
             this.songArtist = "default";
@@ -75,7 +94,8 @@ public class Song {
             preparedStatement.setString(4, this.getSongPath());
             preparedStatement.setString(5, this.getSongURI());
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {}
+        } catch (SQLException e) {
+        }
     }
 
     public String getSongTitle() {
@@ -116,6 +136,14 @@ public class Song {
 
     public void setSongURI(String songURI) {
         this.songURI = songURI;
+    }
+
+    public Image getSongArt() {
+        return songArt;
+    }
+
+    public void setSongArt(Image songArt) {
+        this.songArt = songArt;
     }
 
 }

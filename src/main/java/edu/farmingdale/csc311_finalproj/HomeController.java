@@ -147,8 +147,12 @@ public class HomeController implements Initializable {
                 //...then create song from file, and write to database
                 song = new Song(selected);
                 song.writeToDB();
+                imageView_albumArtMain.setImage(song.getSongArt());
+                imageView_albumArtBar.setImage(song.getSongArt());
             }
         } catch (IOException io) {}
+        
+        
     }
     
 }
