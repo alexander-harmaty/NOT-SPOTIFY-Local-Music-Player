@@ -13,7 +13,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javafx.scene.image.Image;
-import javafx.scene.media.Media;
 
 /**
  *
@@ -34,6 +33,7 @@ public class Song {
         this.songYear = "2022";
         this.songPath = "default";
         this.songURI = "default";
+        this.songArt = null;
     }
 
     public Song(Song song) {
@@ -42,6 +42,7 @@ public class Song {
         this.songYear = song.songYear;
         this.songPath = song.songPath;
         this.songURI = song.songURI;
+        this.songArt = song.songArt;
     }
 
     public Song(String title, String artist, String year, String path, String URI) {
@@ -50,6 +51,16 @@ public class Song {
         this.songYear = year;
         this.songPath = path;
         this.songURI = URI;
+        this.songArt = null;
+    }
+    
+    public Song(String title, String artist, String year, String path, String URI, Image image) {
+        this.songTitle = title;
+        this.songArtist = artist;
+        this.songYear = year;
+        this.songPath = path;
+        this.songURI = URI;
+        this.songArt = image;
     }
 
     public Song(File file) throws IOException, UnsupportedTagException, InvalidDataException {
@@ -61,8 +72,7 @@ public class Song {
             this.songYear = tag.getYear();
             this.songPath = file.getPath();
             this.songURI = file.toURI().toString();
-            Media media = new Media(songURI);
-            this.songArt = (Image) media.getMetadata().get("Image");
+            this.songArt = null;
         }
         if (mp3file.hasId3v2Tag()) {
             ID3v2 tag = mp3file.getId3v2Tag();
@@ -73,13 +83,14 @@ public class Song {
                 raf.close();
             }
             this.songArt = new Image(new ByteArrayInputStream(imageData));
-            
-        } else {
+        } 
+        else {
             this.songTitle = "default";
             this.songArtist = "default";
             this.songYear = "2022";
             this.songPath = "default";
             this.songURI = "default";
+            this.songArt = null;
         }
     }
 
