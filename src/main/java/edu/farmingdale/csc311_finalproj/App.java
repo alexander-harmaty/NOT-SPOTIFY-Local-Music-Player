@@ -17,8 +17,9 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("Home"), 640, 480);
+        scene = new Scene(loadFXML("Home"), 1280, 720);
         stage.setScene(scene);
+        stage.setTitle("Not Spotify");
         stage.show();
     }
 
