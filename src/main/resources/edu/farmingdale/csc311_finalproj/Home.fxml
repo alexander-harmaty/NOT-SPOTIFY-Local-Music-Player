@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import io.github.palexdev.materialfx.controls.MFXSlider?>
+<?import io.github.palexdev.materialfx.controls.MFXTableView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -22,85 +23,146 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem fx:id="menuItem_importFiles" mnemonicParsing="false" onAction="#handleButton_importFiles" text="Import Files" />
-              <MenuItem fx:id="menuItem_close" mnemonicParsing="false" onAction="#handleButton_close" text="Close" />
+                  <MenuItem fx:id="menuItem_importSongFiles" mnemonicParsing="false" onAction="#handleMenuItem_importSongFiles" text="Import Song Files" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="menuItem_importPlaylistJSON" mnemonicParsing="false" onAction="#handleMenuItem_importPlaylistJSON" text="Import Playlist JSON" />
+                  <MenuItem fx:id="menuItem_exportPlaylistJSON" mnemonicParsing="false" onAction="#handleMenuItem_exportPlaylistJSON" text="Export Playlist JSON" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+              <MenuItem fx:id="menuItem_close" mnemonicParsing="false" onAction="#handleMenuItem_close" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem fx:id="menuItem_createPlaylist" mnemonicParsing="false" onAction="#handleButton_createPlaylist" text="Create Playlist" />
+              <MenuItem fx:id="menuItem_createPlaylist" mnemonicParsing="false" onAction="#handleMenuItem_createPlaylist" text="Create Playlist" />
+                  <MenuItem fx:id="menuItem_editPlaylist" mnemonicParsing="false" onAction="#handleMenuItem_editPlaylist" text="Edit Playlist" />
+                  <MenuItem fx:id="menuItem_deletePlaylist" mnemonicParsing="false" onAction="#handleMenuItem_deletePlaylist" text="Delete Playlist" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem fx:id="menuItem_about" mnemonicParsing="false" onAction="#handleButton_about" text="About" />
+              <MenuItem fx:id="menuItem_about" mnemonicParsing="false" onAction="#handleMenuItem_about" text="About" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
    </top>
    <left>
-      <VBox fx:id="VBox_playlists" alignment="TOP_CENTER" prefWidth="200.0" spacing="10.0" style="-fx-background-color: #2C2B27;" BorderPane.alignment="CENTER">
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #2C2B27;">
          <children>
-            <Button fx:id="button_library" mnemonicParsing="false" onAction="#handleButton_library" prefWidth="150.0" style="-fx-background-color: #FFFFFF;" text="Library" />
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Playlists">
+               <VBox.margin>
+                  <Insets left="15.0" top="10.0" />
+               </VBox.margin>
+            </Text>
+            <MFXScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #2C2B27;">
+               <content>
+                  <VBox fx:id="VBox_playlists" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="200.0" spacing="10.0" style="-fx-background-color: #2C2B27;">
+                     <children>
+                        <MFXButton fx:id="button_library" onAction="#handleButton_library" prefWidth="150.0" text="Library" />
+                     </children>
+                     <padding>
+                        <Insets left="15.0" right="15.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </MFXScrollPane>
          </children>
-         <padding>
-            <Insets top="10.0" />
-         </padding></VBox>
+      </VBox>
    </left>
    <bottom>
-      <VBox alignment="CENTER" maxHeight="50.0" maxWidth="1.7976931348623157E308" style="-fx-background-color: #4A4746;" BorderPane.alignment="CENTER">
-         <children>
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="300.0" spacing="20.0">
+      <BorderPane BorderPane.alignment="CENTER">
+         <center>
+            <VBox alignment="CENTER" maxHeight="50.0" maxWidth="1.7976931348623157E308" style="-fx-background-color: #4A4746;">
                <children>
-                  <Button fx:id="button_previous" mnemonicParsing="false" onAction="#handleButton_previous" prefWidth="65.0" style="-fx-background-color: #FFFFFF;" text="Previous" />
-                  <Button fx:id="button_togglePlayPause" mnemonicParsing="false" onAction="#handleButton_togglePlayPause" prefWidth="65.0" style="-fx-background-color: #FFFFFF;" text="Play" />
-                  <Button fx:id="button_next" mnemonicParsing="false" onAction="#handleButton_next" prefWidth="65.0" style="-fx-background-color: #FFFFFF;" text="Next" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" spacing="5.0">
-               <children>
-                  <Label fx:id="label_currentTime" text="00:00" textFill="WHITE" />
-                  <Slider fx:id="slider_progressBar" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="15.0" prefWidth="300.0" />
-                  <Label fx:id="label_endTime" text="00:00" textFill="WHITE" />
-               </children>
-            </HBox>
-         </children>
-         <padding>
-            <Insets top="5.0" />
-         </padding>
-      </VBox>
-   </bottom>
-   <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <ImageView fx:id="imageView_albumArt" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                  <VBox alignment="CENTER_LEFT" prefWidth="200.0">
+                  <HBox alignment="CENTER" prefHeight="25.0" spacing="20.0">
                      <children>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Now Playing:" />
-                        <Label fx:id="label_songTitle" text="Song Title" textFill="WHITE">
+                        <MFXButton fx:id="button_previous" onAction="#handleButton_previous" prefWidth="65.0" text="Previous" />
+                        <MFXButton fx:id="button_togglePlayPause" onAction="#handleButton_togglePlayPause" prefWidth="65.0" text="Play" />
+                        <MFXButton fx:id="button_next" onAction="#handleButton_next" prefWidth="65.0" text="Next" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" spacing="5.0">
+                     <children>
+                        <Label fx:id="label_currentTime" text="00:00" textFill="WHITE" />
+                        <MFXSlider fx:id="slider_progressBar" maxWidth="-Infinity" prefWidth="300.0" />
+                        <Label fx:id="label_endTime" text="00:00" textFill="WHITE" />
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </VBox>
+         </center>
+         <left>
+            <HBox maxHeight="50.0" prefWidth="150.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fx:id="imageView_albumArtBar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                  <VBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: #4A4746;">
+                     <children>
+                        <Label fx:id="label_songTitleBar" maxWidth="1.7976931348623157E308" text="Song Title" textFill="WHITE">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="label_songArtist" text="Artist" textFill="WHITE" />
+                        <Label fx:id="label_songArtistBar" maxWidth="1.7976931348623157E308" text="Song Artist" textFill="WHITE">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Label>
                      </children>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
                   </VBox>
-                  <Slider fx:id="slider_volume" orientation="VERTICAL" />
                </children>
             </HBox>
-            <TableView fx:id="tableView_songsList" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000000; -fx-region-background: #000000;">
-              <columns>
-                <TableColumn fx:id="tableColumn_index" prefWidth="30.0" text="#" />
-                <TableColumn fx:id="tableColumn_songTitle" prefWidth="150.0" text="Title" />
-                  <TableColumn fx:id="tableColumn_songAlbum" prefWidth="150.0" text="Album" />
-                  <TableColumn fx:id="tableColumn_songArtist" prefWidth="150.0" text="Artist" />
-                  <TableColumn fx:id="tableColumn_songDuration" prefWidth="100.0" text="Duration" />
-              </columns>
-            </TableView>
-         </children>
-      </VBox>
+         </left>
+         <right>
+            <VBox alignment="CENTER_RIGHT" maxHeight="50.0" prefWidth="150.0" style="-fx-background-color: #4A4746;" BorderPane.alignment="CENTER">
+               <children>
+                  <MFXSlider fx:id="slider_volume" maxWidth="100.0" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Volume" textAlignment="RIGHT">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Text>
+               </children>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </VBox>
+         </right>
+      </BorderPane>
+   </bottom>
+   <center>
+      <MFXScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #000000;">
+         <content>
+            <VBox fx:id="VBox_main" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <children>
+                  <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0">
+                     <children>
+                        <ImageView fx:id="imageView_albumArtMain" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <VBox alignment="CENTER_LEFT" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="label_playlistTitle" text="Now Playing From Playlist" textFill="WHITE" />
+                              <Label fx:id="label_songTitleMain" text="Song Title" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="label_songArtistMain" text="Song Artist" textFill="WHITE" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <MFXTableView fx:id="tableView_songsList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #000000;" />
+               </children>
+            </VBox>
+         </content>
+      </MFXScrollPane>
    </center>
 </BorderPane>
