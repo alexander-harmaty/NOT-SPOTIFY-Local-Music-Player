@@ -6,6 +6,7 @@ import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXSlider;
+import io.github.palexdev.materialfx.controls.MFXTableColumn;
 import io.github.palexdev.materialfx.controls.MFXTableView;
 import java.io.File;
 import java.io.IOException;
@@ -60,7 +61,7 @@ public class HomeController implements Initializable {
     private MFXSlider slider_progressBar, slider_volume;
 
     @FXML
-    private MFXTableView<?> tableView_songsList;
+    private MFXTableView<Song> tableView_songsList;
 
     ////////////////////////////////////////////////////////////////////////////
     @Override
@@ -155,5 +156,12 @@ public class HomeController implements Initializable {
     
     void updateLibrary() {
         
+    }
+    
+    void setupTable() {
+        MFXTableColumn<Song> column_title;
+        MFXTableColumn<Song> column_artist;
+        MFXTableColumn<Song> column_year;
+        MFXTableColumn<Song> column_duration;
     }
 }
