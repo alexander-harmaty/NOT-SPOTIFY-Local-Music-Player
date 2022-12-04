@@ -12,8 +12,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 
 public class HomeController implements Initializable{
+    
+    MediaPlayer MediaPlayer;
 
     @FXML
     private VBox VBox_main, VBox_playlists;
@@ -118,6 +121,8 @@ public class HomeController implements Initializable{
 
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    
     
 
 }
