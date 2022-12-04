@@ -6,10 +6,9 @@ import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import java.io.File;
 import java.io.IOException;
-import javafx.collections.MapChangeListener;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  *
@@ -46,20 +45,37 @@ public class Song {
         this.songPath = path;
         this.songURI = URI;
     }
-    
+
     public Song(File file) throws IOException, UnsupportedTagException, InvalidDataException {
-        
         Mp3File mp3file = new Mp3File(file);
-        if(mp3file.hasId3v1Tag()) {
+        if (mp3file.hasId3v1Tag()) {
             ID3v1 tag = mp3file.getId3v1Tag();
             this.songTitle = tag.getTitle();
             this.songArtist = tag.getArtist();
             this.songYear = tag.getYear();
             this.songPath = file.getPath();
             this.songURI = file.toURI().toString();
+        } else {
+            this.songTitle = "default";
+            this.songArtist = "default";
+            this.songYear = "2022";
+            this.songPath = "default";
+            this.songURI = "default";
         }
-        
-        
+    }
+
+    public void writeToDB() {
+        try {
+            Connection conn = DatabaseConnection.connectDB();
+            String sql = "INSERT INTO Library (Title, Artist, ReleaseYear, Path, URI) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, this.getSongTitle());
+            preparedStatement.setString(2, this.getSongArtist());
+            preparedStatement.setString(3, this.getSongYear());
+            preparedStatement.setString(4, this.getSongPath());
+            preparedStatement.setString(5, this.getSongURI());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {}
     }
 
     public String getSongTitle() {

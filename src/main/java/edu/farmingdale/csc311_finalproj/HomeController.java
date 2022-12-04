@@ -10,6 +10,9 @@ import io.github.palexdev.materialfx.controls.MFXTableView;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -31,12 +34,6 @@ public class HomeController implements Initializable {
     MediaPlayer mediaPlayer;
     MediaView mediaView;
     List<Media> mediaFiles = new ArrayList<>();
-    
-    Song song = new Song();
-    
-    String title;
-    String artist;
-    int year;
 
     @FXML
     private VBox VBox_main, VBox_playlists;
@@ -131,27 +128,27 @@ public class HomeController implements Initializable {
     }
 
     @FXML
-    void handleMenuItem_importSongFiles(ActionEvent event) throws IOException, UnsupportedTagException, InvalidDataException {
+    void handleMenuItem_importSongFiles(ActionEvent event) throws IOException, UnsupportedTagException, InvalidDataException, SQLException {
+
+        //declare
         FileChooser fc = new FileChooser();
-        File file = null;
+        Song song = null;
+
         try {
-            file = new File(new File(".").getCanonicalPath());
-        } catch (IOException io) {
-        }
-        fc.setInitialDirectory(file);
+            //set initial directory
+            File file = new File(new File(".").getCanonicalPath());
+            fc.setInitialDirectory(file);
 
-        File selected = fc.showOpenDialog(null);
-        if (selected != null) {
-            
-            Mp3File mp3file = new Mp3File(selected);
-            if(mp3file.hasId3v1Tag()){
-                ID3v1 tag = mp3file.getId3v1Tag();
-                song.setSongTitle(tag.getTitle());
-                song.setSongArtist(tag.getArtist());
+            //open file chooser
+            File selected = fc.showOpenDialog(null);
+
+            //check if not null...
+            if (selected != null) {
+                //...then create song from file, and write to database
+                song = new Song(selected);
+                song.writeToDB();
             }
-        }
-        //imageView_albumArtMain.setImage(image);
-        System.out.println(song.getSongArtist() + song.getSongTitle());
+        } catch (IOException io) {}
     }
-
+    
 }
