@@ -28,6 +28,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -289,25 +290,27 @@ public class HomeController implements Initializable {
     
     @FXML
     void handleButton_queue(ActionEvent event) {
-        
         list_queue.addAll(list_currentPlayList) ;
-        
+        setObservableList_queueSongs();
+    }
+    
+    void setObservableList_queueSongs() {
         List<String> queueStrings = new ArrayList<>();
         List<Song> tempList = new ArrayList<>();
-        tempList.addAll(list_currentPlayList);
+        tempList.addAll(list_queue);
         while (!tempList.isEmpty()) {
             Song tempSong = new Song(tempList.remove(0));
             String songTitleAndArtist = tempSong.getSongTitle() + " by " + tempSong.getSongArtist();
             queueStrings.add(songTitleAndArtist);
         }
-        
         observableList_queueSongs = FXCollections.observableArrayList(queueStrings);
         listView_queue.setItems(observableList_queueSongs);
     }
 
     @FXML
     void handleButton_shuffle(ActionEvent event) {
-
+        Collections.shuffle(list_queue);
+        setObservableList_queueSongs();
     }
     
     @FXML
