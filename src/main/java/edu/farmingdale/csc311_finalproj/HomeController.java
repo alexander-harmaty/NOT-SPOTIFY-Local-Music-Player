@@ -21,6 +21,7 @@ import io.github.palexdev.materialfx.font.MFXFontIcon;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.RandomAccessFile;
@@ -296,8 +297,29 @@ public class HomeController implements Initializable {
     }
     
     @FXML
-    void handleMenuItem_importPlaylistJSON(ActionEvent event) {
-
+    void handleMenuItem_importPlaylistJSON(ActionEvent e) throws FileNotFoundException {
+        FileChooser fc = new FileChooser();
+        File selectedFile = fc.showOpenDialog(null);
+        
+        if(selectedFile != null) {
+            GsonBuilder builder = new GsonBuilder();
+            builder.setPrettyPrinting();
+            Gson gson = builder.create();
+            
+            FileReader fr = new FileReader(selectedFile);
+            Playlist playlist = gson.fromJson(fr, Playlist.class);
+            String SongsJSON = playlist.getJSONString();
+            
+            MFXButton button = new MFXButton(playlist.getTitle(), 150, 25);
+            button.setOnAction(event -> {
+                try {
+                    tableView_songsList.getItems().clear();
+                    insertIntoTable(playlist.getSongs());
+                    App.currentJSON = SongsJSON;
+                } catch (IOException | UnsupportedTagException | InvalidDataException ex) {}
+            });
+            VBox_playlists.getChildren().add(button);
+        }
     }
     
     @FXML
@@ -366,6 +388,7 @@ public class HomeController implements Initializable {
         try {
             updateLibrarySongsSetList();
             insertIntoTable(App.set_librarySongs);
+            //App.currentJSON = SongsJSON;
         } catch (IOException | UnsupportedTagException | InvalidDataException ex) {}
     }
 
