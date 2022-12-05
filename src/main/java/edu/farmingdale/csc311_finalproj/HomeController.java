@@ -91,7 +91,7 @@ public class HomeController implements Initializable {
             label_songArtistBar, label_songArtistMain, label_songTitleBar, label_songTitleMain;
 
     @FXML
-    private MenuItem menuItem_about, menuItem_close, menuItem_clearLibraryDB,
+    private MenuItem menuItem_about, menuItem_close, menuItem_clearLibraryDB, menuItem_clearPlaylistsDB,
             menuItem_createPlaylist, menuItem_deletePlaylist, menuItem_editPlaylist,
             menuItem_exportPlaylistJSON, menuItem_importPlaylistJSON, menuItem_importSongFiles;
 
@@ -111,6 +111,9 @@ public class HomeController implements Initializable {
     
     public List<Song> list_queue = new ArrayList<>();
     public List<Song> list_currentPlayList = new ArrayList<>();
+    
+    public MediaPlayer mediaPlayer;
+    public boolean isPlayingMusic = false;
     
     ////////////////////////////////////////////////////////////////////////////
     
@@ -214,6 +217,7 @@ public class HomeController implements Initializable {
                         tableView_songsList.getItems().clear();
                         insertIntoTable(playlist.getSongs());
                         App.currentJSON = SongsJSON;
+                        label_playlistTitle.setText("List Loaded From Your Playlist: " + playlist.getTitle());
                     } catch (IOException | UnsupportedTagException | InvalidDataException ex) {}
                 });
                 buttons.add(button);
@@ -222,26 +226,33 @@ public class HomeController implements Initializable {
         } catch (SQLException except) {}
     }
     
-    void setOnMousePressed() {
-        
-        tableView_songsList.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                //check for primary mouse clicks
-                if (event.getButton().equals(MouseButton.PRIMARY)) {
-                    
-                    //if click is double click...
-                    if (event.getClickCount() == 2) {
-                        
-                        //read selected course CRN
-                        ObservableMap<Integer, Song> map;
-                        map = tableView_songsList.getSelectionModel().getSelection();
-                        Song song = new Song(map.get(0));
-                        System.out.println(song.toString());
-                    }
-                }
-            }    
-        });
+    void setSong() {
+        if (!list_queue.isEmpty()) {
+            Song song = new Song(list_queue.remove(0));
+            String path = song.getSongPath();
+            Media media = new Media(new File(path).toURI().toString());
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
+            
+            imageView_albumArtMain.setImage(song.getSongArt());
+            label_songTitleMain.setText(song.getSongTitle());
+            label_songArtistMain.setText(song.getSongArtist());
+            
+            imageView_albumArtBar.setImage(song.getSongArt());
+            label_songTitleBar.setText(song.getSongTitle());
+            label_songArtistBar.setText(song.getSongArtist());
+            
+        }
+    }
+    
+    void togglePlayPause() {
+        if (isPlayingMusic) {
+            mediaPlayer.pause();
+            isPlayingMusic = false;
+        } else {
+            mediaPlayer.play();
+            isPlayingMusic = true;
+        }
     }
     
     ////////////////////////////////////////////////////////////////////////////
@@ -323,8 +334,19 @@ public class HomeController implements Initializable {
     }
     
     @FXML
-    void handleMenuItem_clearLibraryDB(ActionEvent event) {
-
+    void handleMenuItem_clearLibraryDB(ActionEvent event) throws SQLException {
+        Connection conn = DatabaseConnection.connectDB();
+        String sql = "DELETE FROM Library";
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.executeUpdate();
+    }
+    
+    @FXML
+    void handleMenuItem_clearPlaylistsDB(ActionEvent event) throws SQLException {
+        Connection conn = DatabaseConnection.connectDB();
+        String sql = "DELETE FROM Playlists";
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.executeUpdate();
     }
     
     @FXML
@@ -333,7 +355,9 @@ public class HomeController implements Initializable {
     }
     
     @FXML
-    void handleMenuItem_about(ActionEvent event) {}
+    void handleMenuItem_about(ActionEvent event) {
+    
+    }
     
     ////////////////////////////////////////////////////////////////////////////
     
@@ -358,15 +382,24 @@ public class HomeController implements Initializable {
     ////////////////////////////////////////////////////////////////////////////
 
     @FXML
-    void handleButton_togglePlayPause(ActionEvent event) {}
+    void handleButton_togglePlayPause(ActionEvent event) {
+        togglePlayPause();
+    }
     
     @FXML
-    void handleButton_next(ActionEvent event) {}
+    void handleButton_next(ActionEvent event) {
+        if (!list_queue.isEmpty()) {
+            setSong();
+            mediaPlayer.play();
+            isPlayingMusic = true;
+        }
+    }
     
     @FXML
     void handleButton_queue(ActionEvent event) {
         list_queue.addAll(list_currentPlayList) ;
         setObservableList_queueSongs();
+        setSong();
     }
     
     @FXML
@@ -389,6 +422,7 @@ public class HomeController implements Initializable {
             updateLibrarySongsSetList();
             insertIntoTable(App.set_librarySongs);
             //App.currentJSON = SongsJSON;
+            label_playlistTitle.setText("List Loaded From Your Playlist: Main Library");
         } catch (IOException | UnsupportedTagException | InvalidDataException ex) {}
     }
 

@@ -30,6 +30,7 @@
                   <MenuItem fx:id="menuItem_exportPlaylistJSON" mnemonicParsing="false" onAction="#handleMenuItem_exportPlaylistJSON" text="Export Playlist JSON" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="menuItem_clearLibraryDB" mnemonicParsing="false" onAction="#handleMenuItem_clearLibraryDB" text="Clear Library Database" />
+                  <MenuItem fx:id="menuItem_clearPlaylistsDB" mnemonicParsing="false" onAction="#handleMenuItem_clearPlaylistsDB" text="Clear Playlists Database" />
                   <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem fx:id="menuItem_close" mnemonicParsing="false" onAction="#handleMenuItem_close" text="Close" />
             </items>
@@ -37,8 +38,8 @@
           <Menu mnemonicParsing="false" text="Edit">
             <items>
               <MenuItem fx:id="menuItem_createPlaylist" mnemonicParsing="false" onAction="#handleMenuItem_createPlaylist" text="Create Playlist" />
-                  <MenuItem fx:id="menuItem_editPlaylist" mnemonicParsing="false" onAction="#handleMenuItem_editPlaylist" text="Edit Playlist" />
-                  <MenuItem fx:id="menuItem_deletePlaylist" mnemonicParsing="false" onAction="#handleMenuItem_deletePlaylist" text="Delete Playlist" />
+                  <MenuItem fx:id="menuItem_editPlaylist" disable="true" mnemonicParsing="false" onAction="#handleMenuItem_editPlaylist" text="Edit Playlist" />
+                  <MenuItem fx:id="menuItem_deletePlaylist" disable="true" mnemonicParsing="false" onAction="#handleMenuItem_deletePlaylist" text="Delete Playlist" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -149,13 +150,13 @@
                   <ImageView fx:id="imageView_albumArtMain" fitHeight="325.0" fitWidth="325.0" pickOnBounds="true" preserveRatio="true" />
                   <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="325.0">
                      <children>
-                        <Label fx:id="label_playlistTitle" maxWidth="1.7976931348623157E308" text="Now Playing From Playlist" textFill="WHITE" />
-                        <Label fx:id="label_songTitleMain" maxWidth="1.7976931348623157E308" text="Song Title" textFill="WHITE">
+                        <Label fx:id="label_playlistTitle" maxWidth="1.7976931348623157E308" text="List Loaded From Your Playlist: Main Library" textFill="WHITE" />
+                        <Label fx:id="label_songTitleMain" maxWidth="1.7976931348623157E308" text="Please Queue A Playlist" textFill="WHITE">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <Label fx:id="label_songArtistMain" maxWidth="1.7976931348623157E308" text="Song Artist" textFill="WHITE" />
+                        <Label fx:id="label_songArtistMain" maxWidth="1.7976931348623157E308" text="-" textFill="WHITE" />
                      </children>
                   </VBox>
                </children>
