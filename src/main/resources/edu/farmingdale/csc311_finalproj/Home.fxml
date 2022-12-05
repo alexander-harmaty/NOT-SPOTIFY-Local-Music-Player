@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXListView?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import io.github.palexdev.materialfx.controls.MFXSlider?>
 <?import io.github.palexdev.materialfx.controls.MFXTableView?>
@@ -78,7 +79,7 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="25.0" spacing="20.0">
                      <children>
-                        <MFXButton fx:id="button_previous" onAction="#handleButton_previous" prefWidth="65.0" text="Previous" />
+                        <MFXButton fx:id="button_queue" onAction="#handleButton_queue" prefWidth="65.0" text="Queue" />
                         <MFXButton fx:id="button_togglePlayPause" onAction="#handleButton_togglePlayPause" prefWidth="65.0" text="Play" />
                         <MFXButton fx:id="button_next" onAction="#handleButton_next" prefWidth="65.0" text="Next" />
                      </children>
@@ -141,7 +142,7 @@
       </BorderPane>
    </bottom>
    <center>
-      <BorderPane BorderPane.alignment="CENTER">
+      <BorderPane maxHeight="1.7976931348623157E308" BorderPane.alignment="CENTER">
          <top>
             <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="325.0" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
@@ -161,8 +162,28 @@
             </HBox>
          </top>
          <bottom>
-            <MFXTableView fx:id="tableView_songsList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="320.0" style="-fx-background-color: #8f8989;" BorderPane.alignment="TOP_CENTER" />
+            <MFXTableView fx:id="tableView_songsList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="320.0" onMousePressed="#setOnMousePressed" style="-fx-background-color: #8f8989;" BorderPane.alignment="TOP_CENTER" />
          </bottom>
       </BorderPane>
    </center>
+   <right>
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="15.0" style="-fx-background-color: #2C2B27;" BorderPane.alignment="CENTER">
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Queue" />
+            <HBox spacing="20.0">
+               <children>
+                  <MFXButton fx:id="button_shuffle" onAction="#handleButton_shuffle" prefWidth="65.0" text="Shuffle" />
+                  <MFXButton fx:id="button_clearQueue" onAction="#handleButton_clearQueue" prefWidth="65.0" text="Clear" />
+               </children>
+            </HBox>
+            <MFXListView fx:id="listView_queue" maxHeight="1.7976931348623157E308" minHeight="550.0" prefHeight="550.0" prefWidth="150.0" />
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets left="15.0" right="15.0" top="10.0" />
+         </padding>
+      </VBox>
+   </right>
 </BorderPane>
