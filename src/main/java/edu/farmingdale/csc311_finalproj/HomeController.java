@@ -49,6 +49,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -61,6 +62,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import javax.swing.Icon;
 
@@ -99,11 +101,11 @@ public class HomeController implements Initializable {
     
     ////////////////////////////////////////////////////////////////////////////
     
-    ObservableList<Song> observableList_songsList;
-    ObservableList<String> observableList_queueSongs;
-    Set<Song> set_librarySongs = new HashSet<>();
-    List<Song> list_queue = new ArrayList<>();
-    List<Song> list_currentPlayList = new ArrayList<>();
+    public ObservableList<Song> observableList_songsList;
+    public ObservableList<String> observableList_queueSongs;
+    
+    public List<Song> list_queue = new ArrayList<>();
+    public List<Song> list_currentPlayList = new ArrayList<>();
     
     ////////////////////////////////////////////////////////////////////////////
     
@@ -117,7 +119,7 @@ public class HomeController implements Initializable {
         //set initial tableView data to show user library
         try {
             updateLibrarySongsSetList();
-            insertIntoTable(set_librarySongs);
+            insertIntoTable(App.set_librarySongs);
         } catch (IOException | UnsupportedTagException | InvalidDataException ex) {}
         
     }
@@ -156,7 +158,7 @@ public class HomeController implements Initializable {
     
     void updateLibrarySongsSetList() throws IOException, UnsupportedTagException, InvalidDataException {
         
-        set_librarySongs.clear();
+        App.set_librarySongs.clear();
         
         try {
             Connection conn = DatabaseConnection.connectDB();
@@ -167,7 +169,7 @@ public class HomeController implements Initializable {
                 File file = new File(path);
                 Song song = new Song(file);
                 
-                set_librarySongs.add(song);
+                App.set_librarySongs.add(song);
             }
         } catch (SQLException except) {}
         
@@ -236,7 +238,7 @@ public class HomeController implements Initializable {
             if (tableView_songsList.getItems() == observableList_songsList) {
                 //read new data into Library set for songs
                 updateLibrarySongsSetList();
-                insertIntoTable(set_librarySongs);
+                insertIntoTable(App.set_librarySongs);
             } else {
                 //read new data into Library set for songs
                 updateLibrarySongsSetList();
@@ -269,11 +271,14 @@ public class HomeController implements Initializable {
     
     @FXML
     void handleMenuItem_createPlaylist(ActionEvent event) {
-//        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("Home" + ".fxml"));
-//        Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
-//        stage.setScene(scene);
-//        stage.setTitle("Not Spotify");
-//        stage.show();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CreatePlaylist.fxml"));
+            Parent root = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Course List");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {}
     }
 
     @FXML
@@ -292,7 +297,7 @@ public class HomeController implements Initializable {
     void handleButton_library(ActionEvent event) throws IOException, UnsupportedTagException, UnsupportedTagException, InvalidDataException{
         try {
             updateLibrarySongsSetList();
-            insertIntoTable(set_librarySongs);
+            insertIntoTable(App.set_librarySongs);
         } catch (IOException | UnsupportedTagException | InvalidDataException ex) {}
     }
 
