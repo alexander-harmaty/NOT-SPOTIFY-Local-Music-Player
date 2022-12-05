@@ -47,7 +47,9 @@ import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
@@ -127,19 +129,20 @@ public class HomeController implements Initializable {
         MFXTableColumn<Song> column_title = new MFXTableColumn<>("Title", true, Comparator.comparing(Song::getSongTitle));
         MFXTableColumn<Song> column_artist = new MFXTableColumn<>("Artist", true, Comparator.comparing(Song::getSongArtist));
         MFXTableColumn<Song> column_year = new MFXTableColumn<>("Year", true, Comparator.comparing(Song::getSongYear));
-        MFXTableColumn<Song> column_duration = new MFXTableColumn<>("Time", true, Comparator.comparing(Song::getSongDuration));
+        //MFXTableColumn<Song> column_duration = new MFXTableColumn<>("Time", true, Comparator.comparing(Song::getSongDuration));
         
         column_title.setRowCellFactory(song -> new MFXTableRowCell<>(Song::getSongTitle));
         column_artist.setRowCellFactory(song -> new MFXTableRowCell<>(Song::getSongArtist));
         column_year.setRowCellFactory(song -> new MFXTableRowCell<>(Song::getSongYear));
-        column_duration.setRowCellFactory(song -> new MFXTableRowCell<>(Song::getSongDuration));
+        //column_duration.setRowCellFactory(song -> new MFXTableRowCell<>(Song::getSongDuration));
         
-        tableView_songsList.getTableColumns().addAll(column_title, column_artist, column_year, column_duration);
+        //tableView_songsList.getTableColumns().addAll(column_title, column_artist, column_year, column_duration);
+        tableView_songsList.getTableColumns().addAll(column_title, column_artist, column_year);
         tableView_songsList.getFilters().addAll (
                 new StringFilter<>("Title", Song::getSongTitle),
                 new StringFilter<>("Artist", Song::getSongArtist),
-                new IntegerFilter<>("Year", Song::getSongYear),
-                new StringFilter<>("Duration", song -> song.getSongDuration().toString())
+                new IntegerFilter<>("Year", Song::getSongYear)
+                //new StringFilter<>("Duration", song -> song.getSongDuration().toString())
         );
         
     }
@@ -168,6 +171,19 @@ public class HomeController implements Initializable {
             }
         } catch (SQLException except) {}
         
+    }
+    
+    void setObservableList_queueSongs() {
+        List<String> queueStrings = new ArrayList<>();
+        List<Song> tempList = new ArrayList<>();
+        tempList.addAll(list_queue);
+        while (!tempList.isEmpty()) {
+            Song tempSong = new Song(tempList.remove(0));
+            String songTitleAndArtist = tempSong.getSongTitle() + " by " + tempSong.getSongArtist();
+            queueStrings.add(songTitleAndArtist);
+        }
+        observableList_queueSongs = FXCollections.observableArrayList(queueStrings);
+        listView_queue.setItems(observableList_queueSongs);
     }
     
     @FXML
@@ -253,7 +269,11 @@ public class HomeController implements Initializable {
     
     @FXML
     void handleMenuItem_createPlaylist(ActionEvent event) {
-
+//        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("Home" + ".fxml"));
+//        Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
+//        stage.setScene(scene);
+//        stage.setTitle("Not Spotify");
+//        stage.show();
     }
 
     @FXML
@@ -294,19 +314,6 @@ public class HomeController implements Initializable {
         setObservableList_queueSongs();
     }
     
-    void setObservableList_queueSongs() {
-        List<String> queueStrings = new ArrayList<>();
-        List<Song> tempList = new ArrayList<>();
-        tempList.addAll(list_queue);
-        while (!tempList.isEmpty()) {
-            Song tempSong = new Song(tempList.remove(0));
-            String songTitleAndArtist = tempSong.getSongTitle() + " by " + tempSong.getSongArtist();
-            queueStrings.add(songTitleAndArtist);
-        }
-        observableList_queueSongs = FXCollections.observableArrayList(queueStrings);
-        listView_queue.setItems(observableList_queueSongs);
-    }
-
     @FXML
     void handleButton_shuffle(ActionEvent event) {
         Collections.shuffle(list_queue);

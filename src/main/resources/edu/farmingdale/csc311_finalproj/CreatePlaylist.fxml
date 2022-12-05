@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.csc311_finalproj.CreatePlaylistController">
+   <center>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <MFXTextField fx:id="textField_title" floatingText="Playlist Title" prefWidth="300.0" />
+            <HBox alignment="CENTER" prefHeight="200.0" spacing="15.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" spacing="10.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your Library" />
+                        <TableView fx:id="tableView_library" prefWidth="240.0">
+                          <columns>
+                            <TableColumn prefWidth="120.0" text="Title" />
+                            <TableColumn prefWidth="120.0" text="Artist" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </VBox>
+                  <MFXButton fx:id="button_addSong" onAction="#handleButton_addSong" text="Add" />
+                  <VBox alignment="TOP_CENTER" spacing="10.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your Playlist" />
+                        <TableView fx:id="tableView_playlist" prefWidth="240.0">
+                           <columns>
+                              <TableColumn prefWidth="120.0" text="Title" />
+                              <TableColumn prefWidth="120.0" text="Artist" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <MFXButton fx:id="button_createPlaylist" onAction="#handleButton_createPlaylist" text="Create Playlist" />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
