@@ -139,30 +139,26 @@
       </BorderPane>
    </bottom>
    <center>
-      <MFXScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #000000;">
-         <content>
-            <VBox fx:id="VBox_main" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+      <VBox fx:id="VBox_main" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+         <children>
+            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0">
+                  <ImageView fx:id="imageView_albumArtMain" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                  <VBox alignment="CENTER_LEFT" prefWidth="200.0">
                      <children>
-                        <ImageView fx:id="imageView_albumArtMain" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                        <VBox alignment="CENTER_LEFT" prefWidth="200.0">
-                           <children>
-                              <Label fx:id="label_playlistTitle" text="Now Playing From Playlist" textFill="WHITE" />
-                              <Label fx:id="label_songTitleMain" text="Song Title" textFill="WHITE">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="label_songArtistMain" text="Song Artist" textFill="WHITE" />
-                           </children>
-                        </VBox>
+                        <Label fx:id="label_playlistTitle" text="Now Playing From Playlist" textFill="WHITE" />
+                        <Label fx:id="label_songTitleMain" text="Song Title" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="label_songArtistMain" text="Song Artist" textFill="WHITE" />
                      </children>
-                  </HBox>
-                  <MFXTableView fx:id="tableView_songsList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #000000;" />
+                  </VBox>
                </children>
-            </VBox>
-         </content>
-      </MFXScrollPane>
+            </HBox>
+            <MFXTableView fx:id="tableView_songsList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #8f8989;" />
+         </children>
+      </VBox>
    </center>
 </BorderPane>
