@@ -17,6 +17,7 @@ public class App extends Application {
 
     private static Scene scene;
     public static Set<Song> set_librarySongs = new HashSet<>();
+    public static String currentJSON;
 
     @Override
     public void start(Stage stage) throws IOException {

@@ -20,7 +20,9 @@ import io.github.palexdev.materialfx.font.FontResources;
 import io.github.palexdev.materialfx.font.MFXFontIcon;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.RandomAccessFile;
 import java.net.URL;
 import java.sql.Connection;
@@ -210,6 +212,7 @@ public class HomeController implements Initializable {
                     try {
                         tableView_songsList.getItems().clear();
                         insertIntoTable(playlist.getSongs());
+                        App.currentJSON = SongsJSON;
                     } catch (IOException | UnsupportedTagException | InvalidDataException ex) {}
                 });
                 buttons.add(button);
@@ -278,7 +281,18 @@ public class HomeController implements Initializable {
     
     @FXML
     void handleMenuItem_exportPlaylistJSON(ActionEvent event) {
-
+        FileChooser fc = new FileChooser();
+        File selectedFile = fc.showSaveDialog(null);
+        
+        if(selectedFile != null) {
+            PrintStream ps = null;
+            try{
+                ps = new PrintStream(selectedFile);
+                ps.append(App.currentJSON);
+            }
+            catch (FileNotFoundException e){}
+        }
+        
     }
     
     @FXML
@@ -296,6 +310,9 @@ public class HomeController implements Initializable {
         System.exit(0);
     }
     
+    @FXML
+    void handleMenuItem_about(ActionEvent event) {}
+    
     ////////////////////////////////////////////////////////////////////////////
     
     @FXML
@@ -311,36 +328,18 @@ public class HomeController implements Initializable {
     }
 
     @FXML
-    void handleMenuItem_deletePlaylist(ActionEvent event) {
-
-    }
+    void handleMenuItem_deletePlaylist(ActionEvent event) {}
 
     @FXML
-    void handleMenuItem_editPlaylist(ActionEvent event) {
-
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    
-    @FXML
-    void handleButton_library(ActionEvent event) throws IOException, UnsupportedTagException, UnsupportedTagException, InvalidDataException{
-        try {
-            updateLibrarySongsSetList();
-            insertIntoTable(App.set_librarySongs);
-        } catch (IOException | UnsupportedTagException | InvalidDataException ex) {}
-    }
+    void handleMenuItem_editPlaylist(ActionEvent event) {}
 
     ////////////////////////////////////////////////////////////////////////////
 
     @FXML
-    void handleButton_togglePlayPause(ActionEvent event) {
-
-    }
+    void handleButton_togglePlayPause(ActionEvent event) {}
     
     @FXML
-    void handleButton_next(ActionEvent event) {
-
-    }
+    void handleButton_next(ActionEvent event) {}
     
     @FXML
     void handleButton_queue(ActionEvent event) {
@@ -363,10 +362,13 @@ public class HomeController implements Initializable {
     ////////////////////////////////////////////////////////////////////////////
     
     @FXML
-    void handleMenuItem_about(ActionEvent event) {
-
+    void handleButton_library(ActionEvent event) throws IOException, UnsupportedTagException, UnsupportedTagException, InvalidDataException{
+        try {
+            updateLibrarySongsSetList();
+            insertIntoTable(App.set_librarySongs);
+        } catch (IOException | UnsupportedTagException | InvalidDataException ex) {}
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////
     
 }
