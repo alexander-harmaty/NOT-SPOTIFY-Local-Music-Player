@@ -1,6 +1,7 @@
 package edu.farmingdale.csc311_finalproj;
 
 import com.mpatric.mp3agic.ID3v1;
+import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
@@ -8,33 +9,43 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXSlider;
 import io.github.palexdev.materialfx.controls.MFXTableColumn;
 import io.github.palexdev.materialfx.controls.MFXTableView;
+import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
+import io.github.palexdev.materialfx.filter.IntegerFilter;
+import io.github.palexdev.materialfx.filter.StringFilter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 public class HomeController implements Initializable {
-
-    MediaPlayer mediaPlayer;
-    MediaView mediaView;
-    List<Media> mediaFiles = new ArrayList<>();
 
     @FXML
     private VBox VBox_main, VBox_playlists;
@@ -62,11 +73,11 @@ public class HomeController implements Initializable {
 
     @FXML
     private MFXTableView<Song> tableView_songsList;
-
+    
     ////////////////////////////////////////////////////////////////////////////
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        setupTable();
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -149,19 +160,62 @@ public class HomeController implements Initializable {
                 song = new Song(selected);
                 song.writeToDB();
             }
+            
+            updateLibrary();
         } catch (IOException io) {}
     }
     
     ////////////////////////////////////////////////////////////////////////////
-    
-    void updateLibrary() {
+    void updateLibrary() throws IOException, UnsupportedTagException, InvalidDataException {
+        
+        ObservableList<Song> songsList;
+        List<Song> songs = new ArrayList<>();
+
+        try {
+            Connection conn = DatabaseConnection.connectDB();
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery("select * from Library");
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                String title = rs.getString("Title");
+                String artist = rs.getString("Artist");
+                int year = rs.getInt("ReleaseYear");
+                int min = rs.getInt("Minutes");
+                int sec = rs.getInt("Seconds");
+                String path = rs.getString("Path");
+                String URI = rs.getString("URI");
+                Image image = null;
+                
+                File file = new File(path);
+                Song song = new Song(file);
+                songs.add(song);
+            }
+            songsList = FXCollections.observableArrayList(songs);
+            tableView_songsList.setItems(songsList);
+        } catch (SQLException except) {}
         
     }
     
     void setupTable() {
-        MFXTableColumn<Song> column_title;
-        MFXTableColumn<Song> column_artist;
-        MFXTableColumn<Song> column_year;
-        MFXTableColumn<Song> column_duration;
+        
+        MFXTableColumn<Song> column_title = new MFXTableColumn<>("Title", true, Comparator.comparing(Song::getSongTitle));
+        MFXTableColumn<Song> column_artist = new MFXTableColumn<>("Artist", true, Comparator.comparing(Song::getSongArtist));
+        MFXTableColumn<Song> column_year = new MFXTableColumn<>("Year", true, Comparator.comparing(Song::getSongYear));
+        MFXTableColumn<Song> column_duration = new MFXTableColumn<>("Time", true, Comparator.comparing(Song::getSongDuration));
+        
+        column_title.setRowCellFactory(song -> new MFXTableRowCell<>(Song::getSongTitle));
+        column_artist.setRowCellFactory(song -> new MFXTableRowCell<>(Song::getSongArtist));
+        column_year.setRowCellFactory(song -> new MFXTableRowCell<>(Song::getSongYear));
+        column_duration.setRowCellFactory(song -> new MFXTableRowCell<>(Song::getSongDuration));
+        
+        tableView_songsList.getTableColumns().addAll(column_title, column_artist, column_year, column_duration);
+        tableView_songsList.getFilters().addAll (
+                new StringFilter<>("Title", Song::getSongTitle),
+                new StringFilter<>("Artist", Song::getSongArtist),
+                new IntegerFilter<>("Year", Song::getSongYear),
+                new StringFilter<>("Duration", song -> song.getSongDuration().toString())
+        );
+        
     }
+    
 }

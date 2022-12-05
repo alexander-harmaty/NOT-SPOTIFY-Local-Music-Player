@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -25,7 +26,7 @@ public class Song {
     //fields
     private String songTitle;
     private String songArtist;
-    private String songYear;
+    private int songYear;
     private String songPath;
     private String songURI;
     private Image songArt;
@@ -35,7 +36,7 @@ public class Song {
     public Song() {
         this.songTitle = "default";
         this.songArtist = "default";
-        this.songYear = "2022";
+        this.songYear = 2022;
         this.songPath = "default";
         this.songURI = "default";
         this.songArt = null;
@@ -54,7 +55,7 @@ public class Song {
     }
 
     //all fields constructor without album art
-    public Song(String title, String artist, String year, String path, String URI, Duration duration) {
+    public Song(String title, String artist, int year, String path, String URI, Duration duration) {
         this.songTitle = title;
         this.songArtist = artist;
         this.songYear = year;
@@ -65,7 +66,7 @@ public class Song {
     }
     
     //all fields constructor with album art
-    public Song(String title, String artist, String year, String path, String URI, Image image, Duration duration) {
+    public Song(String title, String artist, int year, String path, String URI, Image image, Duration duration) {
         this.songTitle = title;
         this.songArtist = artist;
         this.songYear = year;
@@ -79,14 +80,15 @@ public class Song {
     public Song(File file) throws IOException, UnsupportedTagException, InvalidDataException {
         
         //use Mp3File from Mp3agic dependency to read file metadata
-        Mp3File mp3file = new Mp3File(file);
+        Mp3File mp3file;
+        mp3file = new Mp3File(file);
         
         //check for string fields
         if (mp3file.hasId3v1Tag()) {
             ID3v1 tag = mp3file.getId3v1Tag();
             this.songTitle = tag.getTitle();
             this.songArtist = tag.getArtist();
-            this.songYear = tag.getYear();
+            this.songYear = Integer.parseInt(tag.getYear());
             this.songPath = file.getPath();
             this.songURI = file.toURI().toString();
             this.songArt = null;
@@ -110,7 +112,7 @@ public class Song {
         else {
             this.songTitle = "default";
             this.songArtist = "default";
-            this.songYear = "2022";
+            this.songYear = 2022;
             this.songPath = "default";
             this.songURI = "default";
             this.songArt = null;
@@ -118,6 +120,30 @@ public class Song {
         }
         
     }
+    
+//    //resultSet constructor
+//    public Song(ResultSet rs) throws SQLException, IOException, UnsupportedTagException, InvalidDataException {
+//        this.songTitle = rs.getString("Title");
+//        this.songArtist = rs.getString("Artist");
+//        this.songYear = rs.getInt("ReleaseYear");
+//        int min = rs.getInt("Minutes");
+//        int sec = rs.getInt("Seconds");
+//        this.songPath = rs.getString("Path");
+//        this.songURI = rs.getString("URI");
+//        File file = new File(songURI);
+//        Mp3File mp3 = new Mp3File(file);   //(new File(songURI));
+//        if (mp3.hasId3v2Tag()) {
+//            ID3v2 tag = mp3.getId3v2Tag();
+//            byte[] imageData = tag.getAlbumImage();
+//            if (imageData != null) {
+//                RandomAccessFile raf = new RandomAccessFile("album-artwork", "rw");
+//                raf.write(imageData);
+//                raf.close();
+//                this.songArt = new Image(new ByteArrayInputStream(imageData));
+//            }
+//        }
+//        this.songDuration = Duration.minutes(min).seconds(sec);
+//    }
 
     //medthod to write class data to Library table in database
     public void writeToDB() {
@@ -130,7 +156,7 @@ public class Song {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, this.getSongTitle());
             preparedStatement.setString(2, this.getSongArtist());
-            preparedStatement.setString(3, this.getSongYear());
+            preparedStatement.setInt(3, this.getSongYear());
             preparedStatement.setInt(4, (int) this.getSongDuration().toMinutes());
             preparedStatement.setInt(5, (int) this.getSongDuration().toSeconds());
             preparedStatement.setString(6, this.getSongPath());
@@ -145,8 +171,8 @@ public class Song {
     public String getSongArtist() { return songArtist; }
     public void setSongArtist(String songArtist) { this.songArtist = songArtist; }
 
-    public String getSongYear() { return songYear; }
-    public void setSongYear(String songYear) { this.songYear = songYear; }
+    public int getSongYear() { return songYear; }
+    public void setSongYear(int songYear) { this.songYear = songYear; }
 
     public String getSongPath() { return songPath; }
     public void setSongPath(String songPath) { this.songPath = songPath; }
