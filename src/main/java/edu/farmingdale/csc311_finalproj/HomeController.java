@@ -45,6 +45,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
@@ -235,13 +236,17 @@ public class HomeController implements Initializable {
             mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
             
             imageView_albumArtMain.setImage(song.getSongArt());
+            FadeTransition fadeTransition =
+                new FadeTransition(Duration.seconds(1), imageView_albumArtMain);
+            fadeTransition.setFromValue(0.0);
+            fadeTransition.setToValue(1.0);
+            fadeTransition.play();
             label_songTitleMain.setText(song.getSongTitle());
             label_songArtistMain.setText(song.getSongArtist());
             
             imageView_albumArtBar.setImage(song.getSongArt());
             label_songTitleBar.setText(song.getSongTitle());
             label_songArtistBar.setText(song.getSongArtist());
-            
         }
     }
     
