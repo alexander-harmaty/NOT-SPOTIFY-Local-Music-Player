@@ -156,6 +156,7 @@ public class HomeController implements Initializable {
         observableList_songsList = FXCollections.observableArrayList(collection);
         tableView_songsList.getItems().clear();
         tableView_songsList.setItems(observableList_songsList);
+        list_currentPlayList.clear();
         list_currentPlayList.addAll(collection);
     }
     
@@ -207,6 +208,7 @@ public class HomeController implements Initializable {
                 MFXButton button = new MFXButton(playlist.getTitle(), 150, 25);
                 button.setOnAction(event -> {
                     try {
+                        tableView_songsList.getItems().clear();
                         insertIntoTable(playlist.getSongs());
                     } catch (IOException | UnsupportedTagException | InvalidDataException ex) {}
                 });
