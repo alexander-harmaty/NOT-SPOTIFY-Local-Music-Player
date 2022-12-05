@@ -93,7 +93,7 @@ public class HomeController implements Initializable {
 
     @FXML
     private MenuItem menuItem_about, menuItem_close, menuItem_clearLibraryDB, menuItem_clearPlaylistsDB,
-            menuItem_createPlaylist, menuItem_deletePlaylist, menuItem_editPlaylist,
+            menuItem_createPlaylist, menuItem_deletePlaylist, menuItem_editPlaylist, menuItem_refreshPlaylists,
             menuItem_exportPlaylistJSON, menuItem_importPlaylistJSON, menuItem_importSongFiles;
 
     @FXML
@@ -261,6 +261,10 @@ public class HomeController implements Initializable {
     }
     
     ////////////////////////////////////////////////////////////////////////////
+    @FXML
+    void handleMenuItem_refreshPlaylists(ActionEvent event) {
+        readPlaylists();
+    }
     
     @FXML
     void handleMenuItem_importSongFiles(ActionEvent event) throws IOException, UnsupportedTagException, InvalidDataException, SQLException {
@@ -344,6 +348,7 @@ public class HomeController implements Initializable {
         String sql = "DELETE FROM Library";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         preparedStatement.executeUpdate();
+        tableView_songsList.getItems().clear();
     }
     
     @FXML
@@ -352,6 +357,7 @@ public class HomeController implements Initializable {
         String sql = "DELETE FROM Playlists";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         preparedStatement.executeUpdate();
+        readPlaylists();
     }
     
     @FXML
