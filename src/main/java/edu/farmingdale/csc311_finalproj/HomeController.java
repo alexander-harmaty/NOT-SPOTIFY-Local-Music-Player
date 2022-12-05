@@ -1,5 +1,7 @@
 package edu.farmingdale.csc311_finalproj;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mpatric.mp3agic.ID3v1;
 import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -122,6 +124,7 @@ public class HomeController implements Initializable {
             insertIntoTable(App.set_librarySongs);
         } catch (IOException | UnsupportedTagException | InvalidDataException ex) {}
         
+        readPlaylists();
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -188,7 +191,31 @@ public class HomeController implements Initializable {
         listView_queue.setItems(observableList_queueSongs);
     }
     
-    @FXML
+    void readPlaylists() {
+        VBox_playlists.getChildren().clear();
+        VBox_playlists.getChildren().add(button_library);
+        List<MFXButton> buttons = new ArrayList<>();
+        try {
+            Connection conn = DatabaseConnection.connectDB();
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery("select * from Playlists");
+            while (result.next()) {
+                String SongsJSON = result.getString("SongsJSON");
+                GsonBuilder builder = new GsonBuilder();
+                Gson gson = builder.create();
+                Playlist playlist = gson.fromJson(SongsJSON, Playlist.class);
+                MFXButton button = new MFXButton(playlist.getTitle(), 150, 25);
+                button.setOnAction(event -> {
+                    try {
+                        insertIntoTable(playlist.getSongs());
+                    } catch (IOException | UnsupportedTagException | InvalidDataException ex) {}
+                });
+                buttons.add(button);
+            }
+            VBox_playlists.getChildren().addAll(buttons);
+        } catch (SQLException except) {}
+    }
+    
     void setOnMousePressed() {
         
         tableView_songsList.setOnMousePressed(new EventHandler<MouseEvent>() {
