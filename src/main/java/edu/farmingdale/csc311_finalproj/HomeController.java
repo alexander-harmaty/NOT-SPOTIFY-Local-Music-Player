@@ -51,7 +51,7 @@ import javafx.util.Duration;
 public class HomeController implements Initializable {
 
     @FXML
-    private VBox VBox_main, VBox_playlists;
+    private VBox VBox_playlists;
 
     @FXML
     private MFXButton button_library;
@@ -67,7 +67,7 @@ public class HomeController implements Initializable {
             label_songArtistBar, label_songArtistMain, label_songTitleBar, label_songTitleMain;
 
     @FXML
-    private MenuItem menuItem_about, menuItem_close,
+    private MenuItem menuItem_about, menuItem_close, menuItem_clearLibraryDB,
             menuItem_createPlaylist, menuItem_deletePlaylist, menuItem_editPlaylist,
             menuItem_exportPlaylistJSON, menuItem_importPlaylistJSON, menuItem_importSongFiles;
 
@@ -147,6 +147,8 @@ public class HomeController implements Initializable {
         
     }
     
+    ////////////////////////////////////////////////////////////////////////////
+    
     @FXML
     void handleMenuItem_importSongFiles(ActionEvent event) throws IOException, UnsupportedTagException, InvalidDataException, SQLException {
 
@@ -182,37 +184,27 @@ public class HomeController implements Initializable {
     }
     
     @FXML
-    void handleButton_library(ActionEvent event) {
-    }
+    void handleMenuItem_exportPlaylistJSON(ActionEvent event) {
 
-    ////////////////////////////////////////////////////////////////////////////
+    }
+    
     @FXML
-    void handleButton_next(ActionEvent event) {
+    void handleMenuItem_importPlaylistJSON(ActionEvent event) {
 
     }
-
+    
     @FXML
-    void handleButton_previous(ActionEvent event) {
+    void handleMenuItem_clearLibraryDB(ActionEvent event) {
 
     }
-
-    @FXML
-    void handleButton_togglePlayPause(ActionEvent event) {
-
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    @FXML
-    void handleMenuItem_about(ActionEvent event) {
-
-    }
-
+    
     @FXML
     void handleMenuItem_close(ActionEvent event) {
-
+        System.exit(0);
     }
-
+    
     ////////////////////////////////////////////////////////////////////////////
+    
     @FXML
     void handleMenuItem_createPlaylist(ActionEvent event) {
 
@@ -229,13 +221,34 @@ public class HomeController implements Initializable {
     }
 
     ////////////////////////////////////////////////////////////////////////////
+    
     @FXML
-    void handleMenuItem_exportPlaylistJSON(ActionEvent event) {
+    void handleButton_library(ActionEvent event) throws IOException, UnsupportedTagException, UnsupportedTagException, InvalidDataException{
+        updateLibrarySongsSetList();
+        insertIntoTable(set_librarySongs);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    
+    @FXML
+    void handleButton_previous(ActionEvent event) {
 
     }
 
     @FXML
-    void handleMenuItem_importPlaylistJSON(ActionEvent event) {
+    void handleButton_togglePlayPause(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void handleButton_next(ActionEvent event) {
+
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    
+    @FXML
+    void handleMenuItem_about(ActionEvent event) {
 
     }
     

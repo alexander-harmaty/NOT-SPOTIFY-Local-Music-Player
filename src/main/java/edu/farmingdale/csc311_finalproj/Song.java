@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -120,30 +119,6 @@ public class Song {
         }
         
     }
-    
-//    //resultSet constructor
-//    public Song(ResultSet rs) throws SQLException, IOException, UnsupportedTagException, InvalidDataException {
-//        this.songTitle = rs.getString("Title");
-//        this.songArtist = rs.getString("Artist");
-//        this.songYear = rs.getInt("ReleaseYear");
-//        int min = rs.getInt("Minutes");
-//        int sec = rs.getInt("Seconds");
-//        this.songPath = rs.getString("Path");
-//        this.songURI = rs.getString("URI");
-//        File file = new File(songURI);
-//        Mp3File mp3 = new Mp3File(file);   //(new File(songURI));
-//        if (mp3.hasId3v2Tag()) {
-//            ID3v2 tag = mp3.getId3v2Tag();
-//            byte[] imageData = tag.getAlbumImage();
-//            if (imageData != null) {
-//                RandomAccessFile raf = new RandomAccessFile("album-artwork", "rw");
-//                raf.write(imageData);
-//                raf.close();
-//                this.songArt = new Image(new ByteArrayInputStream(imageData));
-//            }
-//        }
-//        this.songDuration = Duration.minutes(min).seconds(sec);
-//    }
 
     //medthod to write class data to Library table in database
     public void writeToDB() {

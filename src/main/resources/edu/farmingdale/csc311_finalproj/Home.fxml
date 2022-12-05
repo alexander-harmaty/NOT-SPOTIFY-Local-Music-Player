@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.csc311_finalproj.HomeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.csc311_finalproj.HomeController">
    <top>
       <MenuBar style="-fx-background-color: #4A4746;" BorderPane.alignment="CENTER">
         <menus>
@@ -27,6 +27,8 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="menuItem_importPlaylistJSON" mnemonicParsing="false" onAction="#handleMenuItem_importPlaylistJSON" text="Import Playlist JSON" />
                   <MenuItem fx:id="menuItem_exportPlaylistJSON" mnemonicParsing="false" onAction="#handleMenuItem_exportPlaylistJSON" text="Export Playlist JSON" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="menuItem_clearLibraryDB" mnemonicParsing="false" onAction="#handleMenuItem_clearLibraryDB" text="Clear Library Database" />
                   <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem fx:id="menuItem_close" mnemonicParsing="false" onAction="#handleMenuItem_close" text="Close" />
             </items>
@@ -139,26 +141,28 @@
       </BorderPane>
    </bottom>
    <center>
-      <VBox fx:id="VBox_main" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-         <children>
-            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0">
+      <BorderPane BorderPane.alignment="CENTER">
+         <top>
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="325.0" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fx:id="imageView_albumArtMain" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                  <VBox alignment="CENTER_LEFT" prefWidth="200.0">
+                  <ImageView fx:id="imageView_albumArtMain" fitHeight="325.0" fitWidth="325.0" pickOnBounds="true" preserveRatio="true" />
+                  <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="325.0">
                      <children>
-                        <Label fx:id="label_playlistTitle" text="Now Playing From Playlist" textFill="WHITE" />
-                        <Label fx:id="label_songTitleMain" text="Song Title" textFill="WHITE">
+                        <Label fx:id="label_playlistTitle" maxWidth="1.7976931348623157E308" text="Now Playing From Playlist" textFill="WHITE" />
+                        <Label fx:id="label_songTitleMain" maxWidth="1.7976931348623157E308" text="Song Title" textFill="WHITE">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <Label fx:id="label_songArtistMain" text="Song Artist" textFill="WHITE" />
+                        <Label fx:id="label_songArtistMain" maxWidth="1.7976931348623157E308" text="Song Artist" textFill="WHITE" />
                      </children>
                   </VBox>
                </children>
             </HBox>
-            <MFXTableView fx:id="tableView_songsList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #8f8989;" />
-         </children>
-      </VBox>
+         </top>
+         <bottom>
+            <MFXTableView fx:id="tableView_songsList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="320.0" style="-fx-background-color: #8f8989;" BorderPane.alignment="TOP_CENTER" />
+         </bottom>
+      </BorderPane>
    </center>
 </BorderPane>
