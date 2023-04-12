@@ -51,7 +51,7 @@ The SongsJSON field in the Playlists table stores the list of songs as a JSON st
 The project does not currently utilize threads.
 5. **Lambdas and Streams:**
 The project uses lambdas in the event handlers for various controls (HomeController.java).
-The project does not currently utilize streams. Though it may be utilized for operations like filtering or processing collections, such as filtering songs based on a condition.
+The project does not currently utilize streams.
 6. **Collection Class:**
 The application uses the ObservableList class for maintaining song lists and playlist data.
 
