@@ -6,7 +6,7 @@ Advanced Java Programming Capstone
 
 ## User Interface
 
-![output](output.png)
+![output](Demo.mp4)
 
 ## Assignment Context
 
