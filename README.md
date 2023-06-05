@@ -6,7 +6,7 @@ Advanced Java Programming Capstone
 
 ## User Interface
 
-![output]([Demo.mp4](https://github.com/alexander-harmaty/NOT-SPOTIFY-Local-Music-Player/assets/92049896/34a3e077-7e22-4ddf-812a-36c36534d17c))
+![output](https://github.com/alexander-harmaty/NOT-SPOTIFY-Local-Music-Player/assets/92049896/34a3e077-7e22-4ddf-812a-36c36534d17c)
 
 ## Assignment Context
 
