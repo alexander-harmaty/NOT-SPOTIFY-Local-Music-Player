@@ -13,7 +13,7 @@ Advanced Java Programming Capstone
 
 This project was the fourth and final assignment for my Advanced Programming class in Java.
 
-The goal of was to take concepts learned from previous assignments and put them together for an original final project.
+The goal was to take concepts learned from previous assignments and put them together for an original final project.
 
 The concepts and required features are: a GUI with ListView and animations, SQL Database with JDBC, JSON, Threads, Lambdas and Streams, and a Collection class.
 
