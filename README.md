@@ -6,8 +6,8 @@ Advanced Java Programming Capstone
 
 ## User Interface
 
+https://github.com/alexander-harmaty/NOT-SPOTIFY-Local-Music-Player/assets/92049896/89f64dbb-b1a3-487a-bdbe-0a17724093fe
 
-![output](https://github.com/alexander-harmaty/NOT-SPOTIFY-Local-Music-Player/assets/92049896/34a3e077-7e22-4ddf-812a-36c36534d17c)
 
 ## Assignment Context
 
